@@ -1,0 +1,12 @@
+---
+title: "P8130 Homework 2"
+author: "Lauren Holley"
+date: 2026-10-11
+output: github_document
+---
+  
+```{r message=FALSE}
+library(tidyverse)
+```
+
+# 

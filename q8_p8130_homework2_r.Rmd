@@ -1,5 +1,5 @@
 ---
-title: "P8130 Homework 2"
+title: "Question 8 P8130 Homework 2"
 author: "Lauren Holley"
 date: 2026-10-11
 output: github_document
@@ -9,4 +9,72 @@ output: github_document
 library(tidyverse)
 ```
 
-# 
+## Question 8
+
+```{r}
+set.seed(208)
+B = 100000
+u1 = runif(B)
+u2 = runif(B)
+u3 = runif(B)
+```
+
+#### Part B
+
+Y ~ N(50,8^2)
+
+```{r}
+y = 50 + 8 * qnorm(u1)
+
+print(c(mean(y), var(y)))
+```
+
+D ~ Bernoulli(0.30)
+
+```{r}
+p = 0.30
+
+d = as.integer(u2 > 1 - p)
+
+print(c(mean(d), var(d)))
+```
+
+X(Q4)
+
+```{r}
+x = u3^(1/3)
+
+print(c(mean(x), var(x)))
+```
+
+Estimations:
+
+```{r}
+print(mean(y > 58))
+
+print(mean(d == 1))
+
+print(mean(x <= 0.5))
+```
+
+#### Part C
+
+```{r}
+hist(y, freq = FALSE, ylim = c(0, 0.055))
+
+curve(dnorm(x, 50, 8), add = TRUE)
+```
+
+```{r}
+hist(x, freq = FALSE, ylim = c(0, 3.5))
+
+curve(3 * x^2, from = 0, to = 1, add = TRUE)
+```
+
+#### Part D
+
+```{r}
+print(sort(unique(pbinom(d, 1, p))))
+```
+
+

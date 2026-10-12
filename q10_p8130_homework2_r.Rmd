@@ -1,5 +1,5 @@
 ---
-title: "P8130 Homework 2"
+title: "Question 10 P8130 Homework 2"
 author: "Lauren Holley"
 date: 2026-10-11
 output: github_document
@@ -8,3 +8,137 @@ output: github_document
 ```{r message=FALSE}
 library(tidyverse)
 ```
+
+## Question 10
+
+```{r}
+set.seed(210)
+
+B = 20000
+
+mu = 100
+
+sigma = 12
+```
+
+#### Part A
+
+n = 10 
+
+```{r}
+n_10 = 10
+x_10 = matrix(rnorm(B * n_10, 100, 12), nrow = B)
+means_10 = rowMeans(x_10)
+ses_10 = apply(x_10, 1, sd) / sqrt(n_10)
+
+margin_t_10 = qt(.975, n_10 - 1) * ses_10
+covered_t_10 = (means_10 - margin_t_10 <= mu) & (mu <= means_10 + margin_t_10)
+print(mean(covered_t_10))
+
+margin_z_10 = qnorm(.975) * sigma / sqrt(n_10)
+covered_z_10 = (means_10 - margin_z_10 <= mu) & (mu <= means_10 + margin_z_10)
+print(mean(covered_z_10))
+
+margin_zs_10 = qnorm(.975) * ses_10
+covered_zs_10 = (means_10 - margin_zs_10 <= mu) & (mu <= means_10 + margin_zs_10)
+print(mean(covered_zs_10))
+
+print(mean(2 * margin_t_10))
+```
+
+n = 40
+
+```{r}
+n_40 = 40
+x_40 = matrix(rnorm(B * n_40, 100, 12), nrow = B)
+means_40 = rowMeans(x_40)
+ses_40 = apply(x_40, 1, sd) / sqrt(n_40)
+
+margin_t_40 = qt(.975, n_40 - 1) * ses_40
+covered_t_40 = (means_40 - margin_t_40 <= mu) & (mu <= means_40 + margin_t_40)
+print(mean(covered_t_40))
+
+margin_z_40 = qnorm(.975) * sigma / sqrt(n_40)
+covered_z_40 = (means_40 - margin_z_40 <= mu) & (mu <= means_40 + margin_z_40)
+print(mean(covered_z_40))
+
+margin_zs_40 = qnorm(.975) * ses_40
+covered_zs_40 = (means_40 - margin_zs_40 <= mu) & (mu <= means_40 + margin_zs_40)
+print(mean(covered_zs_40))
+
+print(mean(2 * margin_t_40))
+```
+
+#### Part B
+
+n = 10
+
+```{r}
+t_stat_10 = (means_10 - 100) / ses_10
+
+reject_10 = abs(t_stat_10) > qt(.975, 10 - 1)
+
+print(mean(reject_10))
+
+print(sum(reject_10 != !covered_t_10))
+```
+
+n = 40
+
+```{r}
+t_stat_40 = (means_40 - 100) / ses_40
+
+reject_40 = abs(t_stat_40) > qt(.975, 40 - 1)
+
+print(mean(reject_40))
+
+print(sum(reject_40 != !covered_t_40))
+```
+
+#### Part C
+
+n = 10
+
+```{r}
+t_stat4_10 = (means_10 + 4 - 100) / ses_10
+
+reject4_10 = abs(t_stat4_10) > qt(.975, 10 - 1)
+
+print(mean(reject4_10))
+
+print(1 - mean(reject4_10))
+```
+
+n = 40
+
+```{r}
+t_stat4_40 = (means_40 + 4 - 100) / ses_40
+
+reject4_40 = abs(t_stat4_40) > qt(.975, 40 - 1)
+
+print(mean(reject4_40))
+
+print(1 - mean(reject4_40))
+```
+
+#### Part D
+
+n = 10
+
+```{r}
+sizes = c(10, 40)
+cov_t = c(mean(covered_t_10), mean(covered_t_40))
+cov_z = c(mean(covered_z_10), mean(covered_z_40))
+cov_zs = c(mean(covered_zs_10), mean(covered_zs_40))
+print(cov_t)
+print(cov_z)
+print(cov_zs)
+```
+
+```{r}
+plot(sizes, cov_t, type = "b", ylim = c(0.91, 0.96), xlab = "Sample size (n)", ylab = "Coverage")
+lines(sizes, cov_z, type = "b", pch = 2)
+lines(sizes, cov_zs, type = "b", pch = 3)
+abline(h = 0.95)
+```
+
